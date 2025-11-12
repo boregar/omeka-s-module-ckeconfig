@@ -1,4 +1,4 @@
-# KintMe
+# CKEConfig
 
 A simple module that allows to configure the CKEditor instance used in the administration interface.
 
