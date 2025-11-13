@@ -29,6 +29,7 @@ class Module extends AbstractModule {
       'ckeconfig_enabled_mode' => $settings->get('ckeconfig_enabled_mode', 'no'),
       'ckeconfig_roles' => $settings->get('ckeconfig_roles'),
       'ckeconfig_js' => $settings->get('ckeconfig_js'),
+      'ckeconfig_styles' => $settings->get('ckeconfig_styles'),
     ]);
     return $renderer->formCollection($form, false);
   }
@@ -50,6 +51,7 @@ class Module extends AbstractModule {
     $settings->set('ckeconfig_enabled_mode', $formData['ckeconfig_enabled_mode']);
     $settings->set('ckeconfig_roles', $formData['ckeconfig_roles']);
     $settings->set('ckeconfig_js', $formData['ckeconfig_js']);
+    $settings->set('ckeconfig_styles', $formData['ckeconfig_styles']);
     return true;
   }
 
@@ -77,19 +79,34 @@ class Module extends AbstractModule {
     if ((gettype($allowedRoles) !== 'array') || in_array($userRole, $allowedRoles)) {
       // get the JS of the custom config
       $configJS = $settings->get('ckeconfig_js');
-      if ($configJS) {
-        // inject the config as a script in the head of the layout
-        $view->headScript()->appendScript(sprintf('const CKEConfig = %s;', $configJS));
-        // add the JS code that will apply the custom config to the CKEditor instances
-        $view->headScript()->appendFile($view->assetUrl('js/cm-ckeditor.js', 'CKEConfig'));
-      }
+      // check that the value represents a JS object
+      $configJS = preg_match('/^\{.+\}$/s', $configJS) ? $configJS : 'null';
+      // inject the config as a script in the head of the layout
+      $view->headScript()->appendScript(sprintf('const CKEConfig = %s;', $configJS));
+      // get the styles of the custom config
+      $configStyles = $settings->get('ckeconfig_styles');
+      // check that the value represents a JS array
+      $configStyles = preg_match('/^\[.+\]$/s', $configStyles) ? $configStyles : 'null';
+      // inject the config as a script in the head of the layout
+      $view->headScript()->appendScript(sprintf('const CKEStyles = %s;', $configStyles));
+      // add the JS code that will apply the custom config and styles to the CKEditor instances
+      $view->headScript()->appendFile($view->assetUrl('js/ckeconfig.js', 'CKEConfig'));
     }
   }
 
-  public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $serviceLocator) {
-    // v0.1.1
+  public function install(ServiceLocatorInterface $serviceLocator) {
     $settings = $serviceLocator->get('Omeka\Settings');
-    $settings->delete('ckeconfig_json');
+    $settings->set('ckeconfig_enabled_mode', 'no');
+    $settings->set('ckeconfig_roles', null);
+    $settings->set('ckeconfig_js', "{\r\n  uiColor: '#ccdcec',\r\n  allowedContent: true\r\n}");
+    $settings->set('ckeconfig_styles', "[\r\n  {\r\n    name: 'CKEConfig div',\r\n    element: 'div',\r\n    attributes: {\r\n      'class': 'ckeconfig-div'\r\n    }\r\n  }\r\n]");
+  }
+
+  public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $serviceLocator) {
+    if (version_compare($oldVersion, '0.1.1', '<')) {
+      $settings = $serviceLocator->get('Omeka\Settings');
+      $settings->delete('ckeconfig_json');
+    }
   }
 
   public function uninstall(ServiceLocatorInterface $serviceLocator) {
@@ -97,5 +114,6 @@ class Module extends AbstractModule {
     $settings->delete('ckeconfig_enabled_mode');
     $settings->delete('ckeconfig_roles');
     $settings->delete('ckeconfig_js');
+    $settings->delete('ckeconfig_styles');
   }
 }

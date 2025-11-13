@@ -51,13 +51,26 @@ class ConfigForm extends Form {
       'name' => 'ckeconfig_js',
       'options' => [
         'label' => 'CKEditor config', // @translate
-        'info' => 'The custom configuration as a JS object. Make sure the syntax is valid.', // @translate
+        'info' => 'The custom configuration, formatted as a JS object. Make sure the syntax is valid.', // @translate
         'use_hidden_element' => true,
       ],
       'attributes' => [
         'id' => 'ckeconfig-js',
-        'rows' => '20',
-        'value' => '{\n  uiColor: \'#ccdcec\'\n}',
+        'rows' => '10',
+      ],
+    ]);
+
+    $this->add([
+      'type' => 'textarea',
+      'name' => 'ckeconfig_styles',
+      'options' => [
+        'label' => 'CKEditor styles', // @translate
+        'info' => 'The styles to be added to the default styleset avalailable under the Styles dropdown, formatted as a JS array. Make sure the syntax is valid.', // @translate
+        'use_hidden_element' => true,
+      ],
+      'attributes' => [
+        'id' => 'ckeconfig-js',
+        'rows' => '10',
       ],
     ]);
 

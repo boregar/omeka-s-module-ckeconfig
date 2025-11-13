@@ -6,8 +6,10 @@ const ckeInstances = [];       // instances processed
 
 document.addEventListener('DOMContentLoaded', function () {
   // customise CKE default config
-  if ((typeof CKEDITOR !== 'undefined') && (typeof CKEConfig === 'object')) {
-    console.log(CKEConfig);
+  if ((typeof CKEDITOR !== 'undefined') && ((typeof CKEConfig === 'object') || (typeof CKEStyles === 'array'))) {
+    if (CKEStyles) {
+      CKEDITOR.stylesSet.add('default', CKEStyles);
+    }
     // fire only once an instance is ready the first time it is created to avoid infinite loop
     CKEDITOR.on('instanceReady', function(event) {
       // get the name of the instance
@@ -17,10 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
       // check if the instances has already been processed
       if (ckeInstances.includes(editor)) return;
       ckeInstances.push(editor);
-      // destroy the instance to avoid error "editor-element-conflict"
-      CKEDITOR.instances[editor].destroy(true);
-      // customise the config
-      CKEDITOR.replace(editor, CKEConfig);
+      if (CKEConfig) {
+        // destroy the instance to avoid error "editor-element-conflict"
+        CKEDITOR.instances[editor].destroy(true);
+        // customise the config
+        CKEDITOR.replace(editor, CKEConfig);
+      }
     });
   }
 });

@@ -11,7 +11,8 @@ See general end user documentation for [Installing a module](http://omeka.org/s/
 Once installed and activated, click the **Configure** button to set the following settings:
 - Enabled: enables or disables CKEConfig.
 - Allowed roles: only users who have one of these roles can use the custom configuration. Leave unchecked for no restriction.
-- CKEditor config: the custom configuration as a JS object. Make sure the syntax is valid.
+- CKEditor config: the custom configuration, formatted as a JS object. Make sure the syntax is valid.
+- CKEditor styles: The styles to be added to the default styleset avalailable under the Styles dropdown, formatted as a JS array. Make sure the syntax is valid.
 
 ## Resources
 
