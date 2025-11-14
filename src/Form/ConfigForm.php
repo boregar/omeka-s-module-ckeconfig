@@ -74,6 +74,20 @@ class ConfigForm extends Form {
       ],
     ]);
 
+    $this->add([
+      'type' => 'textarea',
+      'name' => 'ckeconfig_stylesheets',
+      'options' => [
+        'label' => 'Additional stylesheets', // @translate
+        'info' => 'The URL of the stylesheets to be added to CKEditor to make it WYSIWYG. Enter one URL by line.', // @translate
+        'use_hidden_element' => true,
+      ],
+      'attributes' => [
+        'id' => 'ckeconfig-stylesheets',
+        'rows' => '5',
+      ],
+    ]);
+
   }
 
   public function setAcl(Acl $acl) {

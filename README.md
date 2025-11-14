@@ -12,7 +12,8 @@ Once installed and activated, click the **Configure** button to set the followin
 - Enabled: enables or disables CKEConfig.
 - Allowed roles: only users who have one of these roles can use the custom configuration. Leave unchecked for no restriction.
 - CKEditor config: the custom configuration, formatted as a JS object. Make sure the syntax is valid.
-- CKEditor styles: The styles to be added to the default styleset avalailable under the Styles dropdown, formatted as a JS array. Make sure the syntax is valid.
+- CKEditor styles: the styles to be added to the default styleset avalailable under the Styles dropdown, formatted as a JS array. Make sure the syntax is valid.
+- Additional stylesheets: the URL of the stylesheets to be added to CKEditor to make it WYSIWYG. Enter one URL by line.
 
 ## Resources
 
