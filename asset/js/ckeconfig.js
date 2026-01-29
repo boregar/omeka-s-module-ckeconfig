@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var editor = event.editor.name;
       // ensure the instance has been created by Omeka
       if ((editor.match(/^o:.+/)) === null) return;
+      // if (((editor.match(/^o:.+/)) === null) && (editor !== 'editor1')) return;
       // if this instance is already present in the ckeInstances array, this means that the current event is sent by the CKEDITOR.replace(...) below
       if (ckeInstances.includes(editor)) {
         // inject the stylesheet into the iframe containing the HTML
